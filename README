@@ -1,0 +1,29 @@
+# clj-brightcove
+
+Library for accessing the Brightcove Media API (http://http://docs.brightcove.com/en/media/)
+
+## Usage
+
+user=> (use '[brightcove.api :as bc])
+nil
+user=> (def *token* as "xxxxx")
+#'user/*token*
+user=> (bc/find-all-videos *token*)
+
+user=> (bc/find-all-videos *token* {
+    :video_fields "id, name, playsTotal, playsTrailingWeek"
+    :custom_fields "agency"
+    :sort_by "PUBLISH_DATE"
+    :sort_order "desc"
+    })
+
+user=> (bc/find-modified-videos *token* (quot (System/currentTimeMillis) 60000))
+
+user=> (doseq [page (brightcove.api/find-all-videos *token*)]
+            (doall (map #((println "id:" (:id %) "; name:" (:name %))) (:items page))))
+
+## License
+
+Copyright (C) 2010 redentis
+
+Distributed under the Eclipse Public License, the same as Clojure.
